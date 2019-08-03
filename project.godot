@@ -16,7 +16,13 @@ _global_script_class_icons={
 [application]
 
 config/name="gmtk2019"
+run/main_scene="res://GameRoom.tscn"
 config/icon="res://icon.png"
+
+[display]
+
+window/size/width=1224
+window/size/height=800
 
 [rendering]
 
