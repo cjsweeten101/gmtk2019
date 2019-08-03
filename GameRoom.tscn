@@ -13,7 +13,7 @@ position = Vector2( 1101.06, 328.154 )
 rotation = 1.5708
 
 [node name="PlayerHand" parent="." instance=ExtResource( 3 )]
-position = Vector2( 240.413, 583.424 )
+position = Vector2( 240.413, 554.992 )
 
 [node name="Discard" parent="." instance=ExtResource( 2 )]
 position = Vector2( 779.208, 323.986 )

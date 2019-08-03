@@ -5,6 +5,10 @@ export var mana_cost = 5
 var hidden = false
 
 #This may be a bit more complicated for monster cards
+
+func _ready():
+	$ManaCost.text = "Mana Cost: " + str(mana_cost)
+
 func play():
 	played = true
 

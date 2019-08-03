@@ -25,6 +25,13 @@ bla bla
 bla
 "
 
+[node name="ManaCost" type="Label" parent="."]
+margin_left = 7.69247
+margin_top = 225.741
+margin_right = 81.6925
+margin_bottom = 239.741
+text = "Mana Cost: "
+
 [node name="CardBack" type="Sprite" parent="."]
 visible = false
 texture = ExtResource( 3 )
