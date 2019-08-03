@@ -1,6 +1,7 @@
 extends Node2D
 
 #So this will hold the deck, discard, players 
+var ai_timeout = false
 
 var turn_bool
 
@@ -21,10 +22,10 @@ func _physics_process(delta):
 	if $Deck.get_children().size() == 0:
 		reshuffle_discard()
 	$PlayerMana.text = "Mana: " + str($PlayerHand.mana)
-	redraw_hand($PlayerHand)
-	#start_enemy_turn()
+	attempt_to_play_cards($PlayerHand)
+	attempt_to_play_cards($AIHand)
 
-func redraw_hand(hand):
+func attempt_to_play_cards(hand):
 	for n in hand.get_children():
 		if n.played == true:
 			if hand.mana - n.mana_cost >= 0:
@@ -49,7 +50,26 @@ func _on_EndTurn_pressed():
 	$PlayerHand.mana = 10
 	draw(5 - $PlayerHand.get_children().size(), $PlayerHand)
 	$PlayerHand.display(false)
+	ai_timeout = false
 	start_enemy_turn()
 
 func start_enemy_turn():
-	pass
+	if $AITimer.is_stopped() and !ai_timeout:
+		$PlayerHand.deactivate()
+		$AITimer.start()
+		ai_plays()
+	else:
+		pass
+	
+func ai_plays():
+	var choice = randi()%4
+	$AIHand.get_card(choice).play()
+	$AIHand.get_card(choice).show()
+
+func _on_AITimer_timeout():
+	$AITimer.stop()
+	ai_timeout = true
+	draw(5 - $AIHand.get_children().size(), $AIHand)
+	$AIHand.display(false)
+	$PlayerHand.activate()
+	$AIHand.mana = 10

@@ -9,3 +9,10 @@ func display(viewable):
 	for n in get_children():
 		n.show()
 		n.global_position.x = 140 * n.get_index()
+func deactivate():
+	for n in get_children():
+		n.disable()
+
+func activate():
+	for n in get_children():
+		n.enable()

@@ -19,3 +19,9 @@ func show():
 
 func activate():
 	pass
+
+func enable():
+	$TextureButton.disabled = false
+
+func disable():
+	$TextureButton.disabled = true

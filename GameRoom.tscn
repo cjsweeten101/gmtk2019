@@ -52,4 +52,7 @@ margin_right = 817.334
 margin_bottom = 41.3388
 text = "Enemy Health: 20
 "
+
+[node name="AITimer" type="Timer" parent="."]
 [connection signal="pressed" from="EndTurn" to="." method="_on_EndTurn_pressed"]
+[connection signal="timeout" from="AITimer" to="." method="_on_AITimer_timeout"]
