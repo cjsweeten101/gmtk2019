@@ -6,6 +6,7 @@ var fireball_resource = preload("res://Fireball.tscn")
 var knight_resource = preload("res://Knight.tscn")
 var default_resource = preload("res://Card.tscn")
 var rewind_resource = preload("res://Rewind.tscn")
+var wipe_resource = preload("res://Wipe.tscn")
 var cards_in_deck = []
 
 func _ready():
@@ -16,7 +17,7 @@ func _ready():
 		elif i <= 10:
 			new_card = rewind_resource.instance()
 		elif i <= 15:
-			new_card = default_resource.instance()
+			new_card = wipe_resource.instance()
 		elif i<=20:
 			new_card = knight_resource.instance()
 		new_card.hide()

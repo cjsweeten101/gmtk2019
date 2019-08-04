@@ -32,7 +32,6 @@ func _physics_process(delta):
 	attempt_to_play_cards($PlayerHand)
 	attempt_to_play_cards($PlayerField)
 	attempt_to_play_cards($AIHand)
-	print($PlayerHand.get_children().size())
 
 func check_for_game_over():
 	if ai_health <= 0 or player_health <= 0:
@@ -91,13 +90,24 @@ func resolve_card(card ,hand):
 		$Deck.add_card(card, true)
 		$Deck.shuffle()
 	elif d.has("discard"):
-		var new_card = $Discard.get_card().duplicate()
-		hand.add_child(new_card)
-		if player_turn:
-			hand.display(true)
-		else:
-			hand.display(false)
+		if $Discard.get_children().size() > 0:
+			var new_card = $Discard.get_card().duplicate()
+			hand.add_child(new_card)
+			if player_turn:
+				hand.display(true)
+			else:
+				hand.display(false)
 		$Discard.add_card(card, false)
+	elif d.has("wipe"):
+		for n in $PlayerField.get_children():
+			$PlayerField.remove_child(n)
+			$Discard.add_card(n, true)
+			n.position = Vector2(0,0)
+		for n in $AIField.get_children():
+			$AIField.remove_child(n)
+			$Discard.add_card(n,true)
+			n.position = Vector2(0,0)
+		$Discard.add_card(card,false)
 	else:
 		card.show()
 		#if !card.in_play:
