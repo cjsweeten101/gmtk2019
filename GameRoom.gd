@@ -32,6 +32,7 @@ func _physics_process(delta):
 	attempt_to_play_cards($PlayerHand)
 	attempt_to_play_cards($PlayerField)
 	attempt_to_play_cards($AIHand)
+	print($PlayerHand.get_children().size())
 
 func check_for_game_over():
 	if ai_health <= 0 or player_health <= 0:
@@ -60,7 +61,7 @@ func attempt_to_play_cards(hand):
 
 func resolve_card(card ,hand):
 	#The dictionary of behaviors pls don't hurt me:
-	#{"damage": int, "reshuffle": bool, "monster": bool, "attack": int, "health": int}
+	#{"damage": int, "reshuffle": bool, "monster": bool, "attack": int, "health": int, "discard": 1}
 	if !card.in_play:
 		hand.mana -= card.mana_cost
 		hand.remove_child(card)
@@ -71,7 +72,7 @@ func resolve_card(card ,hand):
 			ai_health -= d["damage"]
 		else:
 			player_health -= d["damage"]
-	if d.has("monster") and !card.in_play:
+	elif d.has("monster") and !card.in_play:
 		card.in_play = true
 		card.played = false
 		card.disable()
@@ -86,12 +87,17 @@ func resolve_card(card ,hand):
 			player_health -= d["attack"]
 		card.played = false
 		card.disable()
-		#var target = $Deck.get_card().duplicate()
-		#	var source = new_owner
-		#	source.add_child(target)
-	if d.has("reshuffle"):
+	elif d.has("reshuffle"):
 		$Deck.add_card(card, true)
 		$Deck.shuffle()
+	elif d.has("discard"):
+		var new_card = $Discard.get_card().duplicate()
+		hand.add_child(new_card)
+		if player_turn:
+			hand.display(true)
+		else:
+			hand.display(false)
+		$Discard.add_card(card, false)
 	else:
 		card.show()
 		#if !card.in_play:
