@@ -153,7 +153,6 @@ func _on_AITimer_timeout():
 		n.enable()
 	$AITimer.stop()
 	ai_timeout = true
-	print("hello pls")
 	draw(5 - $AIHand.get_children().size(), $AIHand)
 	$AIHand.display(false)
 	$PlayerHand.activate()
