@@ -22,6 +22,7 @@ func draw(numb_cards, new_owner):
 			source.add_child(target)
 
 func _physics_process(delta):
+	check_for_game_over()
 	$AIHealth.text = "Health: " + str(ai_health)
 	$PlayerHealth.text = "Health: " + str(player_health)
 	if $Deck.get_children().size() == 0:
@@ -29,6 +30,13 @@ func _physics_process(delta):
 	$PlayerMana.text = "Mana: " + str($PlayerHand.mana)
 	attempt_to_play_cards($PlayerHand)
 	attempt_to_play_cards($AIHand)
+
+func check_for_game_over():
+	if ai_health <= 0 or player_health <= 0:
+		$PlayerHand.deactivate()
+		$GameOver.text = "Game Over!"
+		$GameOver/PlayButton.visible = true
+		$GameOver/PlayButton.disabled = false
 
 func attempt_to_play_cards(hand):
 	for n in hand.get_children():
@@ -97,4 +105,4 @@ func _on_AITimer_timeout():
 
 
 func _on_PlayButton_pressed():
-	pass # Replace with function body.
+	get_tree().reload_current_scene()
