@@ -5,6 +5,7 @@ var ai_timeout = false
 var player_turn = true
 var ai_health = 20
 var player_health = 20
+var waiting = false
 
 var turn_bool
 
@@ -29,6 +30,7 @@ func _physics_process(delta):
 		reshuffle_discard()
 	$PlayerMana.text = "Mana: " + str($PlayerHand.mana)
 	attempt_to_play_cards($PlayerHand)
+	attempt_to_play_cards($PlayerField)
 	attempt_to_play_cards($AIHand)
 
 func check_for_game_over():
@@ -41,7 +43,16 @@ func check_for_game_over():
 func attempt_to_play_cards(hand):
 	for n in hand.get_children():
 		if n.played == true:
-			if hand.mana - n.mana_cost >= 0:
+			if n.in_play:
+				resolve_card(n, hand)
+			elif hand.mana - n.mana_cost >= 0:
+				#if !player_turn:
+				n.show()
+					#if $DisplayTimer.is_stopped():
+					#	$DisplayTimer.start()
+					#	waiting = true
+				#if !waiting:
+				#	print("what")
 				resolve_card(n, hand)
 	
 			else:
@@ -49,27 +60,48 @@ func attempt_to_play_cards(hand):
 
 func resolve_card(card ,hand):
 	#The dictionary of behaviors pls don't hurt me:
-	#{"damage": int, "reshuffle": bool}
-	hand.mana -= card.mana_cost
-	hand.remove_child(card)
-	card.position = Vector2(0,0)
+	#{"damage": int, "reshuffle": bool, "monster": bool, "attack": int, "health": int}
+	if !card.in_play:
+		hand.mana -= card.mana_cost
+		hand.remove_child(card)
+		card.position = Vector2(0,0)
 	var d = card.activate()
 	if d.has("damage"):
 		if player_turn:
 			ai_health -= d["damage"]
 		else:
 			player_health -= d["damage"]
+	if d.has("monster") and !card.in_play:
+		card.in_play = true
+		card.played = false
+		card.disable()
+		if player_turn:
+			$PlayerField.add_card(card)
+		else:
+			$AIField.add_card(card)
+	elif d.has("monster"):
+		if player_turn:
+			ai_health -= d["attack"]
+		else:
+			player_health -= d["attack"]
+		card.played = false
+		card.disable()
+		#var target = $Deck.get_card().duplicate()
+		#	var source = new_owner
+		#	source.add_child(target)
 	if d.has("reshuffle"):
-		$Deck.add_card(card)
+		$Deck.add_card(card, true)
 		$Deck.shuffle()
 	else:
-		$Discard.add_card(card)
+		card.show()
+		#if !card.in_play:
+		$Discard.add_card(card, false)
 
 func reshuffle_discard():
 	for n in $Discard.get_children():
 		var moving_card = n.duplicate()
 		n.queue_free()
-		$Deck.add_card(moving_card)
+		$Deck.add_card(moving_card, true)
 	
 	$Deck.shuffle()
 
@@ -96,6 +128,8 @@ func ai_plays():
 
 func _on_AITimer_timeout():
 	player_turn = true
+	for n in $PlayerField.get_children():
+		n.enable()
 	$AITimer.stop()
 	ai_timeout = true
 	draw(5 - $AIHand.get_children().size(), $AIHand)
@@ -106,3 +140,8 @@ func _on_AITimer_timeout():
 
 func _on_PlayButton_pressed():
 	get_tree().reload_current_scene()
+
+
+func _on_DisplayTimer_timeout():
+	$DisplayTimer.stop()
+	waiting = false

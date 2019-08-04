@@ -23,7 +23,7 @@ func show():
 	$CardBack.visible = false
 
 func activate():
-	var d = {}
+	var d = {"damage": 5, "reshuffle": true}
 	return d
 
 func enable():

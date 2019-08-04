@@ -22,7 +22,7 @@ config/icon="res://icon.png"
 [display]
 
 window/size/width=1224
-window/size/height=800
+window/size/height=900
 
 [rendering]
 

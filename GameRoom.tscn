@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://GameRoom.gd" type="Script" id=1]
 [ext_resource path="res://Deck.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Hand.tscn" type="PackedScene" id=3]
 [ext_resource path="res://AIHand.gd" type="Script" id=4]
+[ext_resource path="res://PlayerField.gd" type="Script" id=5]
+[ext_resource path="res://AIField.gd" type="Script" id=6]
 
 [node name="GameRoom" type="Node2D"]
 script = ExtResource( 1 )
@@ -24,14 +26,14 @@ disabled = true
 text = "PLAY AGAIN"
 
 [node name="Deck" parent="." instance=ExtResource( 2 )]
-position = Vector2( 1101.06, 328.154 )
+position = Vector2( 1206.55, 322.88 )
 rotation = 1.5708
 
 [node name="PlayerHand" parent="." instance=ExtResource( 3 )]
-position = Vector2( 240.413, 554.992 )
+position = Vector2( 247.445, 651.687 )
 
 [node name="Discard" parent="." instance=ExtResource( 2 )]
-position = Vector2( 779.208, 323.986 )
+position = Vector2( 1204.7, 152.722 )
 rotation = 1.5708
 default_size = 0
 
@@ -43,6 +45,7 @@ margin_bottom = 656.371
 text = "End Turn"
 
 [node name="AIHand" type="Node2D" parent="."]
+position = Vector2( 1.43198, -133.174 )
 script = ExtResource( 4 )
 
 [node name="PlayerMana" type="Label" parent="."]
@@ -71,6 +74,17 @@ text = "Enemy Health:
 "
 
 [node name="AITimer" type="Timer" parent="."]
+
+[node name="PlayerField" type="Node2D" parent="."]
+position = Vector2( 249.108, 387.148 )
+script = ExtResource( 5 )
+
+[node name="AIField" type="Node2D" parent="."]
+position = Vector2( 1.58667, 136.454 )
+script = ExtResource( 6 )
+
+[node name="DisplayTimer" type="Timer" parent="."]
 [connection signal="pressed" from="GameOver/PlayButton" to="." method="_on_PlayButton_pressed"]
 [connection signal="pressed" from="EndTurn" to="." method="_on_EndTurn_pressed"]
 [connection signal="timeout" from="AITimer" to="." method="_on_AITimer_timeout"]
+[connection signal="timeout" from="DisplayTimer" to="." method="_on_DisplayTimer_timeout"]
