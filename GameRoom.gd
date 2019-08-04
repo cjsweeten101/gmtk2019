@@ -6,6 +6,7 @@ var player_turn = true
 var ai_health = 20
 var player_health = 20
 var waiting = false
+var waiting_card
 
 var turn_bool
 
@@ -46,14 +47,18 @@ func attempt_to_play_cards(hand):
 			if n.in_play:
 				resolve_card(n, hand)
 			elif hand.mana - n.mana_cost >= 0:
-				#if !player_turn:
-				n.show()
-					#if $DisplayTimer.is_stopped():
-					#	$DisplayTimer.start()
-					#	waiting = true
+				if !player_turn:
+					if $DisplayTimer.is_stopped():
+						n.show()
+						$DisplayTimer.start()
+						waiting = true
+						waiting_card = n
+						$AITimer.stop()
 				#if !waiting:
 				#	print("what")
-				resolve_card(n, hand)
+				else:
+					n.show()
+					resolve_card(n, hand)
 	
 			else:
 				n.played = false
@@ -148,6 +153,7 @@ func _on_AITimer_timeout():
 		n.enable()
 	$AITimer.stop()
 	ai_timeout = true
+	print("hello pls")
 	draw(5 - $AIHand.get_children().size(), $AIHand)
 	$AIHand.display(false)
 	$PlayerHand.activate()
@@ -160,4 +166,6 @@ func _on_PlayButton_pressed():
 
 func _on_DisplayTimer_timeout():
 	$DisplayTimer.stop()
+	$AITimer.start()
 	waiting = false
+	resolve_card(waiting_card, $AIHand)

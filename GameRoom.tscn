@@ -85,6 +85,7 @@ position = Vector2( 1.58667, 136.454 )
 script = ExtResource( 6 )
 
 [node name="DisplayTimer" type="Timer" parent="."]
+wait_time = 2.0
 [connection signal="pressed" from="GameOver/PlayButton" to="." method="_on_PlayButton_pressed"]
 [connection signal="pressed" from="EndTurn" to="." method="_on_EndTurn_pressed"]
 [connection signal="timeout" from="AITimer" to="." method="_on_AITimer_timeout"]
