@@ -42,7 +42,8 @@ margin_left = 709.66
 margin_top = 583.055
 margin_right = 775.66
 margin_bottom = 614.055
-text = "Health: 20
+text = "Health: 
+
 "
 
 [node name="AIHealth" type="Label" parent="."]
@@ -50,9 +51,25 @@ margin_left = 704.334
 margin_top = 10.3388
 margin_right = 817.334
 margin_bottom = 41.3388
-text = "Enemy Health: 20
+text = "Enemy Health: 
+
 "
 
 [node name="AITimer" type="Timer" parent="."]
+
+[node name="GameOver" type="Label" parent="."]
+margin_left = 566.052
+margin_top = 314.042
+margin_right = 643.052
+margin_bottom = 328.042
+text = "Game Over!"
+
+[node name="PlayButton" type="Button" parent="GameOver"]
+margin_left = -1.99026
+margin_top = 23.2197
+margin_right = 88.0097
+margin_bottom = 43.2197
+text = "PLAY AGAIN"
 [connection signal="pressed" from="EndTurn" to="." method="_on_EndTurn_pressed"]
 [connection signal="timeout" from="AITimer" to="." method="_on_AITimer_timeout"]
+[connection signal="pressed" from="GameOver/PlayButton" to="." method="_on_PlayButton_pressed"]

@@ -1,7 +1,7 @@
 extends Node2D
 
 export var default_size = 20
-var temp_card_resource = preload("res://Card.tscn")
+var temp_card_resource = preload("res://Fireball.tscn")
 var cards_in_deck = []
 
 func _ready():

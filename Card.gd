@@ -22,7 +22,8 @@ func show():
 	$CardBack.visible = false
 
 func activate():
-	pass
+	var d = {"damage": 5, "reshuffle": true}
+	return d
 
 func enable():
 	$TextureButton.disabled = false
